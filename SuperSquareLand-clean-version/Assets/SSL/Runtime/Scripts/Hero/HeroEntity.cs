@@ -10,6 +10,9 @@ public class HeroEntity : MonoBehaviour
     private float _horizontalSpeed = 0f;
     private float _moveDirX = 0f;
 
+    [Header("Dash")]
+    [SerializeField] private HeroDashSettings _dashSetting;
+
     [Header("Orientation")]
     [SerializeField] private Transform _orientVisualRoot;
     private float _orientX = 1f;
@@ -22,13 +25,24 @@ public class HeroEntity : MonoBehaviour
         _moveDirX = dirX;
     }
 
+    public void _ActivateDash()
+    {
+        _dashSetting.dashTimer = 0f;
+        if (_dashSetting.dashTimer < _dashSetting.duration && _dashSetting.isDashing == false) {
+            _dashSetting.isDashing = true;
+            _horizontalSpeed += _dashSetting.speed;
+        } else {
+            _dashSetting.isDashing = false;
+            return;
+        }
+
+    }
+
     private void FixedUpdate()
     {
-        if (_AreOrientAndMovementOpposite())
-        {
+        if (_AreOrientAndMovementOpposite()) {
             _TurnBack();
-        } else
-        {
+        } else {
             _UpdateHorizontalSpeed();
             _ChangeOrientFromHorizontalMovement();
         }
@@ -62,9 +76,7 @@ public class HeroEntity : MonoBehaviour
         } else {
             _Decelerate();
         }
-
     }
-
 
     private void _ChangeOrientFromHorizontalMovement()
     {
@@ -82,7 +94,7 @@ public class HeroEntity : MonoBehaviour
 
     private void _Decelerate()
     {
-        _horizontalSpeed -= _mouvementsSetting.deceleration * Time.deltaTime;
+        _horizontalSpeed -= _mouvementsSetting.deceleration * Time.fixedDeltaTime;
         if (_horizontalSpeed < 0f){
             _horizontalSpeed = 0f;
         }
@@ -90,7 +102,7 @@ public class HeroEntity : MonoBehaviour
 
     private void _TurnBack()
     {
-        _horizontalSpeed -= _mouvementsSetting.turnBackFrictions * Time.deltaTime;
+        _horizontalSpeed -= _mouvementsSetting.turnBackFrictions * Time.fixedDeltaTime;
         if (_horizontalSpeed < 0f) {
             _horizontalSpeed = 0f;
             _ChangeOrientFromHorizontalMovement();
@@ -99,7 +111,7 @@ public class HeroEntity : MonoBehaviour
 
     private bool _AreOrientAndMovementOpposite()
     {
-        return _moveDirX + _orientX < 0f;
+        return _moveDirX * _orientX < 0f;
     }
 
     private void OnGUI()
