@@ -17,6 +17,7 @@ public class HeroEntity : MonoBehaviour
 
     public void SetMoveDirX(float dirX)
     {
+        _moveDirX = dirX;
     }
 
     private void FixedUpdate()
@@ -26,6 +27,9 @@ public class HeroEntity : MonoBehaviour
 
     private void _ApplyHorizontalSpeed()
     {
+        Vector2 velocity = _rigidbody.velocity;
+        velocity.x = _horizontalSpeed * _moveDirX;
+        _rigidbody.velocity = velocity;
     }
     
     private void Update()
