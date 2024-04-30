@@ -54,12 +54,14 @@ public class HeroEntity : MonoBehaviour
 
     public void _ActivateDash()
     {
-        _dashSetting.dashTimer = 0f;
-        if (_dashSetting.dashTimer < _dashSetting.duration && _dashSetting.isDashing == false) {
+        _dashSetting.dashTimer += Time.deltaTime;
+        if (_dashSetting.dashTimer < _dashSetting.duration && !_dashSetting.isDashing) {
+            _horizontalSpeed = _dashSetting.speed;
             _dashSetting.isDashing = true;
-            _horizontalSpeed += _dashSetting.speed;
         } else {
             _dashSetting.isDashing = false;
+            _horizontalSpeed = 0f;
+            _dashSetting.dashTimer = 0f;
             return;
         }
     }
