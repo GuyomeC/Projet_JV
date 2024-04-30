@@ -10,6 +10,16 @@ public class HeroEntity : MonoBehaviour
     private float _horizontalSpeed = 0f;
     private float _moveDirX = 0f;
 
+    [Header("Fall")]
+    [SerializeField] private HeroFallSetting _fallSetting;
+
+    [Header("Vertical Movements")]
+    private float _verticalSpeed = 0f;
+
+    [Header("Ground")]
+    [SerializeField] private GroundDetector _groundDetector;
+    public bool IsTouchingGround { get; private set; }
+
     [Header("Dash")]
     [SerializeField] private HeroDashSettings _dashSetting;
 
@@ -40,13 +50,24 @@ public class HeroEntity : MonoBehaviour
 
     private void FixedUpdate()
     {
+
+        _ApplyGroundDetection();
         if (_AreOrientAndMovementOpposite()) {
             _TurnBack();
         } else {
             _UpdateHorizontalSpeed();
             _ChangeOrientFromHorizontalMovement();
         }
+
+        if (!IsTouchingGround) {
+            _ApplyFallGravity();
+        } else {
+            _ResetVerticalSpeed();
+        }
+
+
         _ApplyHorizontalSpeed();
+        _ApplyVerticalSpeed();
     }
 
     private void _ApplyHorizontalSpeed()
@@ -54,6 +75,32 @@ public class HeroEntity : MonoBehaviour
         Vector2 velocity = _rigidbody.velocity;
         velocity.x = _horizontalSpeed * _orientX;
         _rigidbody.velocity = velocity;
+    }
+
+    private void _ApplyFallGravity()
+    {
+        _verticalSpeed -= _fallSetting.fallGravity * Time.fixedDeltaTime;
+        if (_verticalSpeed < -_fallSetting.fallSpeedMax)
+        {
+            _verticalSpeed = -_fallSetting.fallSpeedMax;
+        }
+    }
+
+    private void _ApplyVerticalSpeed()
+    {
+        Vector2 velocity = _rigidbody.velocity;
+        velocity.y = _verticalSpeed;
+        _rigidbody.velocity = velocity;
+    }
+
+    private void _ApplyGroundDetection()
+    {
+        IsTouchingGround = _groundDetector.DetectGroundNearBy();
+    }
+
+    private void _ResetVerticalSpeed()
+    {
+        _verticalSpeed = 0f;
     }
     
     private void Update()
@@ -122,7 +169,13 @@ public class HeroEntity : MonoBehaviour
         GUILayout.Label(gameObject.name);
         GUILayout.Label($"MoveDirX = {_moveDirX}");
         GUILayout.Label($"OrientX = {_orientX}");
+        if (IsTouchingGround) {
+            GUILayout.Label("OnGround");
+        } else {
+            GUILayout.Label("InAir");
+        }
         GUILayout.Label($"Horizontal Speed = {_horizontalSpeed}");
+        GUILayout.Label($"Vertical Speed = {_verticalSpeed}");
         GUILayout.EndVertical();
     }
 }
