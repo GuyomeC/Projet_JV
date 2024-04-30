@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class HeroEntity : MonoBehaviour
 {
@@ -6,7 +7,9 @@ public class HeroEntity : MonoBehaviour
     [SerializeField] private Rigidbody2D _rigidbody;
 
     [Header("Horizontal Movements")]
-    [SerializeField] private HeroHorizontalMovementSettings _mouvementsSetting;
+    [FormerlySerializedAs("_mouvementsSetting")]
+    [SerializeField] private HeroHorizontalMovementSettings _groundHorizontalMovementsSettings;
+    [SerializeField] private HeroHorizontalMovementSettings _airHorizontalMovementsSettings;
     private float _horizontalSpeed = 0f;
     private float _moveDirX = 0f;
 
@@ -82,10 +85,12 @@ public class HeroEntity : MonoBehaviour
     {
 
         _ApplyGroundDetection();
+
+        HeroHorizontalMovementSettings horizontalMovementSettings = _GetCurrentHorizontalMovementSettings();
         if (_AreOrientAndMovementOpposite()) {
-            _TurnBack();
+            _TurnBack(horizontalMovementSettings);
         } else {
-            _UpdateHorizontalSpeed();
+            _UpdateHorizontalSpeed(horizontalMovementSettings);
             _ChangeOrientFromHorizontalMovement();
         }
         if (IsJumping) {
@@ -181,13 +186,13 @@ public class HeroEntity : MonoBehaviour
         _orientVisualRoot.localScale = newScale;
     }
 
-    private void _UpdateHorizontalSpeed()
+    private void _UpdateHorizontalSpeed(HeroHorizontalMovementSettings settings)
     {
         if (_moveDirX != 0f)
         {
-            _Accelerate();
+            _Accelerate(settings);
         } else {
-            _Decelerate();
+            _Decelerate(settings);
         }
     }
 
@@ -197,25 +202,25 @@ public class HeroEntity : MonoBehaviour
         _orientX = Mathf.Sign(_moveDirX);
     }
 
-    private void _Accelerate()
+    private void _Accelerate( HeroHorizontalMovementSettings settings)
     {
-        _horizontalSpeed += _mouvementsSetting.acceleration * Time.fixedDeltaTime;
-        if (_horizontalSpeed > _mouvementsSetting.speedMax) {
-            _horizontalSpeed = _mouvementsSetting.speedMax;
+        _horizontalSpeed += settings.acceleration * Time.fixedDeltaTime;
+        if (_horizontalSpeed > settings.speedMax) {
+            _horizontalSpeed = settings.speedMax;
         }
     }
 
-    private void _Decelerate()
+    private void _Decelerate(HeroHorizontalMovementSettings settings)
     {
-        _horizontalSpeed -= _mouvementsSetting.deceleration * Time.fixedDeltaTime;
+        _horizontalSpeed -= settings.deceleration * Time.fixedDeltaTime;
         if (_horizontalSpeed < 0f){
             _horizontalSpeed = 0f;
         }
     }
 
-    private void _TurnBack()
+    private void _TurnBack(HeroHorizontalMovementSettings settings)
     {
-        _horizontalSpeed -= _mouvementsSetting.turnBackFrictions * Time.fixedDeltaTime;
+        _horizontalSpeed -= settings.turnBackFrictions * Time.fixedDeltaTime;
         if (_horizontalSpeed < 0f) {
             _horizontalSpeed = 0f;
             _ChangeOrientFromHorizontalMovement();
@@ -225,6 +230,20 @@ public class HeroEntity : MonoBehaviour
     private bool _AreOrientAndMovementOpposite()
     {
         return _moveDirX * _orientX < 0f;
+    }
+
+    //private HeroHorizontalMovementSettings _GetCurrentHorizontalMovementSettings()
+    //{
+    //    return IsTouchingGround ? _groundHorizontalMovementsSettings : _airHorizontalMovementsSettings;
+    //}
+
+    private HeroHorizontalMovementSettings _GetCurrentHorizontalMovementSettings()
+    {
+        if (IsTouchingGround) {
+            return _groundHorizontalMovementsSettings;
+        } else {
+            return _airHorizontalMovementsSettings;
+        }
     }
 
     private void OnGUI()
