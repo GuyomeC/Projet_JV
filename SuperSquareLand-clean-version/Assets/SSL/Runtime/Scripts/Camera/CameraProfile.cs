@@ -6,11 +6,11 @@ public class CameraProfile : MonoBehaviour
     [SerializeField] private CameraProfileType _profileType = CameraProfileType.Static;
 
     [Header("Follow")]
-    [SerializeField] private Transform _targetToFollow = null;
+    [SerializeField] private CameraFollowable _targetToFollow = null;
 
     public CameraProfileType ProfileType => _profileType;
 
-    public Transform TargetToFollow => _targetToFollow;
+    public CameraFollowable TargetToFollow => _targetToFollow;
 
     private Camera _camera;
     public float CameraSize => _camera.orthographicSize;

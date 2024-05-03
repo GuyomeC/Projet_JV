@@ -14,6 +14,8 @@ public class CameraManager : MonoBehaviour
     private float _profileTransitionDuration = 0f;
     private Vector3 _profileTransitionStartPosition;
     private float _profileTransitionStartSize;
+    //Follow
+    private Vector3 _profileLastFollowDestination;
 
     private void Awake()
     {
@@ -116,8 +118,10 @@ public class CameraManager : MonoBehaviour
     {
         if (_currentCameraProfile.ProfileType == CameraProfileType.FollowTarget) {
             if(_currentCameraProfile.TargetToFollow != null) {
-                Vector3 destination = _currentCameraProfile.TargetToFollow.position;
-                return destination;
+                CameraFollowable targetToFollow = _currentCameraProfile.TargetToFollow;
+                _profileLastFollowDestination.x = targetToFollow.FollowPositionX;
+                _profileLastFollowDestination.y = targetToFollow.FollowPositionY;
+                return _profileLastFollowDestination;
             }
         }
 
