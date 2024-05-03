@@ -845,15 +845,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 7212136366118121974}
-  _mouvementsSetting:
+  _groundHorizontalMovementsSettings:
     acceleration: 20
     deceleration: 15
     turnBackFrictions: 25
     speedMax: 10
+  _airHorizontalMovementsSettings:
+    acceleration: 20
+    deceleration: 15
+    turnBackFrictions: 25
+    speedMax: 10
+  _fallSetting:
+    fallGravity: 20
+    fallSpeedMax: 10
+  _groundDetector: {fileID: 0}
   _dashSetting:
     speed: 40
     duration: 0.1
     dashTimer: 0
     isDashing: 0
   _orientVisualRoot: {fileID: 3024582456938629764}
-  _guiDebug: 1
+  _jumpSettings:
+    jumpSpeed: 10
+    jumpMinDuration: 0.05
+    jumpMaxDuration: 0.15
+  _jumpFallSettings:
+    fallGravity: 20
+    fallSpeedMax: 10
+  _guiDebug: 0
