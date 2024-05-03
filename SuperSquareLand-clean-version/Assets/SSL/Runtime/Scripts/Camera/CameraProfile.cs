@@ -14,6 +14,13 @@ public class CameraProfile : MonoBehaviour
     [SerializeField] private bool _useDampingVertically;
     [SerializeField] private float _verticalDampingFactor = 5f;
 
+    [Header("Bounds")]
+    [SerializeField] private bool _hasBounds;
+    [SerializeField] private Rect _boundsRect = new Rect(0f, 0f, 10f, 10f);
+
+    public bool HasBounds => _hasBounds;
+    public Rect BoundsRect => _boundsRect;
+
     public bool UseDampingHorizontally => _useDampingHorizontally;
     public float HorizontalDampingFactor  => _horizontalDampingFactor;
     public bool UseDampingVertically => _useDampingVertically;
@@ -38,7 +45,12 @@ public class CameraProfile : MonoBehaviour
         }
     }
 
-
+    private void OnDrawGizmosSelected()
+    {
+        if (!_hasBounds) return;
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(_boundsRect.center, _boundsRect.size);
+    }
 }
 
 public enum CameraProfileType

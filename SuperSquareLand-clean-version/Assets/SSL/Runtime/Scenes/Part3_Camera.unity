@@ -919,6 +919,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _profileType: 0
   _targetToFollow: {fileID: 0}
+  _useDampingHorizontally: 0
+  _horizontalDampingFactor: 5
+  _useDampingVertically: 0
+  _verticalDampingFactor: 5
 --- !u!20 &869992946
 Camera:
   m_ObjectHideFlags: 0
@@ -1535,6 +1539,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _profileType: 0
   _targetToFollow: {fileID: 0}
+  _useDampingHorizontally: 0
+  _horizontalDampingFactor: 5
+  _useDampingVertically: 0
+  _verticalDampingFactor: 5
 --- !u!1 &1641381205
 GameObject:
   m_ObjectHideFlags: 0
