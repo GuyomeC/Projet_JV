@@ -88,7 +88,7 @@ public class CameraManager : MonoBehaviour
         _currentCameraProfile = _defaultCameraProfile;
         _SetCameraPosition(_currentCameraProfile.Position);
         _SetCameraSize(_currentCameraProfile.CameraSize);
-        _SetCameraDampedPosition(_FindCameraNextPosition());
+        _SetCameraDampedPosition(_ClampPositionIntoBounds(_FindCameraNextPosition()));
         
     }
 
