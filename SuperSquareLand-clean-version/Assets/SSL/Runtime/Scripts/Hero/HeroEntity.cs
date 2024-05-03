@@ -36,6 +36,8 @@ public class HeroEntity : MonoBehaviour
 
     private CameraFollowable _cameraFollowable;
 
+    public bool IsHorizontalMoving => _moveDirX != 0f;
+
     enum JumpState
     {
         NotJumping,
