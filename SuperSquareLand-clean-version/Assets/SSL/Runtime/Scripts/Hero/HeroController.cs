@@ -12,7 +12,7 @@ public class HeroController : MonoBehaviour
 
     [Header("Coyote Time")]
     [SerializeField] private float _coyoteTimeDuration = 0.2f;
-    private float _coyoteTimeCountdown = -1f;
+    [SerializeField] private float _coyoteTimeCountdown = -1f;
 
     [Header("Debug")]
     [SerializeField] private bool _guiDebug = false;
@@ -47,16 +47,22 @@ public class HeroController : MonoBehaviour
             _UpdateCoyoteTime();
         }
 
+        if (_entity.IsTouchingGround)
+        {
+            _entity.jumpLeft = 2;
+        }
+
 
         if (_GetInputDownJump()) {
-            if ((_entity.IsTouchingGround || _IsCoyoteTimeActive()) && !_entity.IsJumping) {
+            if (_IsCoyoteTimeActive() || _entity.jumpLeft > 0 && !_entity.IsJumpImpulsing) {
                 _entity.JumpStart();
+                _entity.jumpLeft -= 1;
             } else {
                 _ResetJumpBuffer();
             }
         }
         if (IsJumpBufferActive()) {
-            if ((_entity.IsTouchingGround || _IsCoyoteTimeActive()) && !_entity.IsJumping) {
+            if (_IsCoyoteTimeActive() || _entity.jumpLeft > 0 && !_entity.IsJumpImpulsing) {
                 _entity.JumpStart();
             }
         }
@@ -67,9 +73,11 @@ public class HeroController : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.E)) {
+        if (_GetInputDash()) {
             _entity._ActivateDash();
         }
+
+        _entity._Dash();
 
         _entityWasTouchingGround = _entity.IsTouchingGround;
     }
@@ -81,6 +89,11 @@ public class HeroController : MonoBehaviour
     private bool _GetInputJump()
     {
         return Input.GetKey(KeyCode.Space);
+    }
+
+    private bool _GetInputDash()
+    {
+        return Input.GetKeyDown(KeyCode.E);
     }
 
     private float GetInputMoveX()

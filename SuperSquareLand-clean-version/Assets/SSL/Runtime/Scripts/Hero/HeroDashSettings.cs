@@ -7,7 +7,7 @@ using System;
 public class HeroDashSettings
 {
     public float speed = 40f;
-    public float duration = 0.1f;
+    public float duration = 0.2f;
     public float dashTimer;
     public bool isDashing;
 }

@@ -12,8 +12,8 @@ public class HeroEffectBounce : MonoBehaviour
 
     [Header("Bounce Loop")]
     [SerializeField] private float bouncePeriod;
-    [SerializeField] private float bounceHeight = 0.5f;
-    private float _bounceTimer = 0f;
+    //[SerializeField] private float bounceHeight = 0.5f;
+    //private float _bounceTimer = 0f;
     private float _currentHeight = 0f;
 
     private void _SetObjectToBounceHeight(float height)
