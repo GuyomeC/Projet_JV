@@ -68,7 +68,6 @@ public class HeroEntity : MonoBehaviour
         _cameraFollowable = GetComponent<CameraFollowable>();
         _cameraFollowable.FollowPositionX = _rigidbody.position.x;
         _cameraFollowable.FollowPositionY = _rigidbody.position.y;
-        allJumpSettings[0] = _jumpSettings;
     }
 
     public void SetMoveDirX(float dirX)
