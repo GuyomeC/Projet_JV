@@ -19,6 +19,9 @@ public class HeroEntity : MonoBehaviour
     [Header("Vertical Movements")]
     private float _verticalSpeed = 0f;
 
+    [Header("Wall Slide")]
+    [SerializeField] private HeroWallSlideSettings _wallSlideSettings;
+
     [Header("Ground")]
     [SerializeField] private GroundDetector _groundDetector;
     public bool IsTouchingGround { get; private set; }
