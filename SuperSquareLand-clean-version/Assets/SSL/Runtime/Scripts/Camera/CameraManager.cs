@@ -19,6 +19,9 @@ public class CameraManager : MonoBehaviour
     //Dumping
     private Vector3 _dampedPosition;
 
+    [SerializeField] private HeroEntity _entity;
+
+
     private void Awake()
     {
         Instance = this;
@@ -67,7 +70,6 @@ public class CameraManager : MonoBehaviour
             _PlayProfileTransition(transition);
         }
         _SetCameraDampedPosition(_FindCameraNextPosition());
-
     }
 
     private void _SetCameraPosition(Vector3 position)
@@ -128,7 +130,13 @@ public class CameraManager : MonoBehaviour
         if (_currentCameraProfile.ProfileType == CameraProfileType.FollowTarget) {
             if(_currentCameraProfile.TargetToFollow != null) {
                 CameraFollowable targetToFollow = _currentCameraProfile.TargetToFollow;
-                _profileLastFollowDestination.x = targetToFollow.FollowPositionX;
+                if(_entity._orientX < 0)
+                {
+                    _profileLastFollowDestination.x = targetToFollow.FollowPositionX - _defaultCameraProfile._followOffsetX;
+                } else
+                {
+                    _profileLastFollowDestination.x = targetToFollow.FollowPositionX + _defaultCameraProfile._followOffsetX;
+                }
                 _profileLastFollowDestination.y = targetToFollow.FollowPositionY;
                 return _profileLastFollowDestination;
             }

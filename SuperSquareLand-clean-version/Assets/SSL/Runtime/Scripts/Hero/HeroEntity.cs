@@ -35,7 +35,7 @@ public class HeroEntity : MonoBehaviour
 
     [Header("Orientation")]
     [SerializeField] private Transform _orientVisualRoot;
-    private float _orientX = 1f;
+    public float _orientX = 1f;
 
     [Header("Jump")]
     [SerializeField] private HeroJumpSettings[] allJumpSettings;
@@ -151,10 +151,21 @@ public class HeroEntity : MonoBehaviour
             }
         }
 
+        if ((IsTouchingLeftWall || IsTouchingRightWall) && !IsTouchingGround)
+        {
+            _ApplyWallSlideGravity(_wallSlideSettings);
+            jumpLeft = 1;
+            if (IsJumping)
+            {
+                _UpdateJump();
+            }
+        }
+
         if (!_wallTouch && _timeBetweenWallTouch > 0 && !IsJumping)
         {
             IsTouchingWalls();
-        }else
+        }
+        else
         {
             _wallTouch = false;
         }
@@ -170,6 +181,15 @@ public class HeroEntity : MonoBehaviour
     }
 
     private void _ApplyFallGravity(HeroFallSetting setting)
+    {
+        _verticalSpeed -= setting.fallGravity * Time.fixedDeltaTime;
+        if (_verticalSpeed < -setting.fallSpeedMax)
+        {
+            _verticalSpeed = -setting.fallSpeedMax;
+        }
+    }
+
+    private void _ApplyWallSlideGravity(HeroWallSlideSettings setting)
     {
         _verticalSpeed -= setting.fallGravity * Time.fixedDeltaTime;
         if (_verticalSpeed < -setting.fallSpeedMax)
