@@ -2160,12 +2160,24 @@ PrefabInstance:
       value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 6255421265771988060, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
+      propertyPath: allJumpSettings.Array.data[0].jumpSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6255421265771988060, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
       propertyPath: allJumpSettings.Array.data[1].jumpSpeed
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6255421265771988060, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
       propertyPath: allJumpSettings.Array.data[2].jumpSpeed
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6255421265771988060, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
+      propertyPath: allJumpSettings.Array.data[0].jumpMaxDuration
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 6255421265771988060, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
+      propertyPath: allJumpSettings.Array.data[0].jumpMinDuration
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 6255421265771988060, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
       propertyPath: allJumpSettings.Array.data[1].jumpMaxDuration
